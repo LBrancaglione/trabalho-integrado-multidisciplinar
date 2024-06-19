@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trabalho integrado multidiciplinar</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <style>
+      @import url("https://fonts.cdnfonts.com/css/bebas-neue");
+      @import url("https://fonts.cdnfonts.com/css/poppins");
+      /* 1200 x 780 */
+      body {
+        margin: 0;
+        font-size: 15px;
+        background-color: darkslategray;
+      }
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        list-style: none;
+      }
+      svg {
+        color: #fff;
+      }
+      :root {
+        --width-default: min(1200px, 90vw);
+        --diameter: 1432px;
+      }
+      .logo img {
+        width: 50px;
+      }
+      header {
+        width: var(--width-default);
+        height: 70px;
+        margin: auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+        z-index: 1;
+      }
+      .slider {
+        /* background-color: red; */
+        color: #eee;
+        width: 100vw;
+        height: 100vh;
+        position: relative;
+        overflow: hidden;
+        margin-top: -70px;
+      }
+      .slider .list .item {
+        position: absolute;
+        inset: 0 0 0 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: 1s;
+      }
+      .slider .list .item .content {
+        position: absolute;
+        top: 20%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: max-content;
+        max-width: 100%;
+        text-align: center;
+        display: grid;
+        grid-template-columns: repeat(2, 400px);
+        text-align: left;
+        gap: 80px;
+        font-size: 1.2em;
+        text-transform: uppercase;
+        font-family: Poppins;
+        text-shadow: 0 0 80px #000;
+      }
+      .slider .list .item .content h2 {
+        font-size: 10em;
+        font-family: "Bebas Neue", sans-serif;
+        line-height: 0.9em;
+        transform: translateY(-100%);
+        transition: transform 1s;
+        grid-row-start: 1;
+        grid-row-end: 3;
+      }
+
+      .slider .list .item .content p:last-child {
+        display: flex;
+        justify-content: start;
+        align-items: end;
+        padding-bottom: 25px;
+      }
+
+      .chart {
+        padding: 2rem;
+        border: 1px solid #31e7f4;
+        border-radius: 1rem;
+        background: #1e1c35;
+        box-shadow: 0 0 16px rgba(0, 0, 0, 0.8);
+      }
+
+      .chart p {
+        font-size: 14px;
+        padding-top: 20px;
+        text-align: center;
+        padding-bottom: 0;
+      }
+
+      /* item default */
+      .slider .list .item .image {
+        flex-shrink: 0;
+        width: var(--diameter);
+        height: var(--diameter);
+        background-image: var(--url);
+        background-size: var(--diameter) var(--diameter);
+        background-position: center;
+        border-radius: 50%;
+        transform: rotate(-60deg);
+        position: relative;
+        transition: 1s;
+      }
+      .slider .list .item .image::before,
+      .slider .list .item .image::after {
+        position: absolute;
+        width: 70%;
+        height: 70%;
+        content: "";
+        border-radius: 50%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(-120deg);
+        background-image: linear-gradient(to right, #0004, #0004), var(--url);
+        background-size: var(--diameter) var(--diameter);
+        background-position: center;
+        transition: 1s;
+      }
+      .slider .list .item .image::after {
+        width: 30%;
+        height: 30%;
+        background-image: var(--url);
+        border: 3px solid #fff2;
+        transform: translate(-50%, -50%) rotate(-170deg);
+      }
+
+      /* default  */
+      .slider .list .item .image {
+        filter: blur(30px);
+      }
+
+      .slider .list .item {
+        pointer-events: none;
+        opacity: 0;
+      }
+      /* item active */
+      .slider .list .item.active {
+        pointer-events: auto;
+        opacity: 1;
+      }
+      .slider .item.active .image {
+        filter: blur(0px);
+        transform: rotate(0deg);
+      }
+      .slider .item.active .image::before,
+      .slider .item.active .image::after {
+        transform: translate(-50%, -50%) rotate(0deg);
+      }
+      .slider .list .item.active .content h2 {
+        transform: translateY(0);
+      }
+
+      /* item phía sau */
+      .slider .list .item.active ~ .item {
+        opacity: 0;
+      }
+      .slider .item.active ~ .item .image {
+        transform: rotate(60deg);
+      }
+      .slider .item.active ~ .item .image::before {
+        transform: translate(-50%, -50%) rotate(120deg);
+      }
+      .slider .item.active ~ .item .image::after {
+        transform: translate(-50%, -50%) rotate(170deg);
+      }
+      .slider .list .item.active ~ .item .content h2 {
+        transform: translateY(100%);
+      }
+      /* arrows */
+      .arrows {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 30px;
+        width: var(--width-default);
+        display: flex;
+        justify-content: space-between;
+      }
+      .arrows button {
+        all: unset;
+        cursor: pointer;
+      }
+      .slider .list::after {
+        position: absolute;
+        content: "";
+        bottom: 0;
+        width: min(1000px, 100vw);
+        height: 70%;
+        left: 50%;
+        transform: translateX(-50%);
+        background-image: url(img/model.png);
+        background-size: cover;
+        background-position: top;
+        pointer-events: none;
+        animation: showModel 1s ease-in-out 1 forwards;
+      }
+      @keyframes showModel {
+        from {
+          transform: translateX(-50%) scale(1.3) translateY(88px);
+        }
+      }
+
+      .arrows button.d-none {
+        opacity: 0;
+        pointer-events: none;
+      }
+      @media all and (max-width: 1024px) {
+        .slider .list .item .content {
+          grid-template-columns: repeat(2, 300px);
+        }
+        .slider .list .item .content h2 {
+          font-size: 8em;
+        }
+      }
+      @media all and (max-width: 767px) {
+        .slider .list .item .content {
+          grid-template-columns: 80%;
+          justify-content: center;
+          gap: 20px;
+          top: 70px;
+        }
+        .slider .list .item .content h2 {
+          font-size: 4em;
+        }
+        .slider .list .item .content p {
+          font-size: small;
+        }
+      }
+    </style>
+    <main>
+      <header>
+        <p style="color: #fff">
+          <span>&#9888;</span> Esta Pesquisa não é Válida !
+        </p>
+        <nav>
+          <p style="color: #fff">
+            Nomes: Leonardo Brancaglione, Yuri Tallis Sanezi
+          </p>
+        </nav>
+      </header>
+      <section class="slider">
+        <div class="list">
+          <div class="item active">
+            <div class="image" style="--url: url('img/1.jpg')"></div>
+            <div class="content">
+              <h2>Gênero do Público</h2>
+              <div class="chart">
+                <canvas id="doughnut-1" width="400" height="400"></canvas>
+                <p>
+                  - Mulheres já tem papel fundamental na decisão de compra.
+                  <br />- Homens precisam ser mais engajados.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="image" style="--url: url('img/2.jpg')"></div>
+            <div class="content">
+              <h2>idade do Público</h2>
+              <div class="chart">
+                <canvas id="pie-2" width="400" height="400"></canvas>
+                <p>- Geração Z<br />- Relação Custo - Benefício - Lealdade</p>
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="image" style="--url: url('img/3.jpg')"></div>
+            <div class="content">
+              <h2 style="font-size: 5em">Escolaridade do Público</h2>
+              <div class="chart">
+                <canvas id="pie-3" width="400" height="400"></canvas>
+                <p>- 82,2% concluiram o fundamental</p>
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="image" style="--url: url('img/4.jpg')"></div>
+            <div class="content">
+              <h2>Renda Per Capita</h2>
+              <div class="chart">
+                <canvas id="pie-4" width="400" height="400"></canvas>
+                <p>
+                  - Faixa de renda intermediaria (60,5%)<br />- Renda mensal
+                  moderada
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="image" style="--url: url('img/1.jpg')"></div>
+            <div class="content">
+              <h2>Online X Física</h2>
+              <div class="chart">
+                <canvas id="pie-5" width="400" height="400"></canvas>
+                <p>
+                  - Ambas opções tem valor prorporcional<br />- É necessário ter
+                  presença online
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="image" style="--url: url('img/2.jpg')"></div>
+            <div class="content">
+              <h2 style="font-size: 6em">Melhorias no Atendimento</h2>
+              <div class="chart">
+                <canvas id="pie-6" width="400" height="400"></canvas>
+                <p>- Investir em treinamento</p>
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="image" style="--url: url('img/3.jpg')"></div>
+            <div class="content">
+              <div class="chart">
+                <canvas id="pie-8" width="400" height="400"></canvas>
+              </div>
+              <div class="chart">
+                <canvas id="pie-7" width="400" height="400"></canvas>
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="image" style="--url: url('img/4.jpg')"></div>
+            <div class="content">
+              <h2 style="font-size: 5em">Recomendação Geral</h2>
+              <div class="chart">
+                <canvas id="pie-9" width="400" height="400"></canvas>
+                <p>- Impacto do bom Atendimento</p>
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="image" style="--url: url('img/1.jpg')"></div>
+            <div class="content">
+              <div class="chart">
+                <canvas id="pie-10" width="400" height="400"></canvas>
+              </div>
+              <div class="chart">
+                <canvas id="pie-11" width="400" height="400"></canvas>
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="image" style="--url: url('img/2.jpg')"></div>
+            <div class="content">
+              <div class="chart">
+                <canvas id="pie-12" width="400" height="400"></canvas>
+              </div>
+              <div class="chart">
+                <canvas id="pie-13" width="400" height="400"></canvas>
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="image" style="--url: url('img/3.jpg')"></div>
+            <div class="content">
+              <div class="chart">
+                <canvas id="pie-14" width="400" height="400"></canvas>
+              </div>
+              <div class="chart">
+                <canvas id="pie-15" width="400" height="400"></canvas>
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="image" style="--url: url('img/4.jpg')"></div>
+            <div class="content">
+              <h2 style="font-size: 5em">Ética no atendimento</h2>
+              <p>
+                - Um maior conteúdo crítico negativo em relação aos incômodos no
+                atendimento.
+              </p>
+            </div>
+          </div>
+          <div class="item">
+            <div class="image" style="--url: url('img/1.jpg')"></div>
+            <div class="content">
+              <h2 style="font-size: 6em;">Portanto...</h2>
+              <p>
+                - base sólida de satisfação geral <br />
+                - Investir na melhoria <br />
+                - Fortalecer a lealdade
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="arrows">
+          <button id="prev">
+            <svg
+              class="w-6 h-6 text-gray-800 dark:text-white"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 12h14M5 12l4-4m-4 4 4 4"
+              />
+            </svg>
+          </button>
+          <button id="next">
+            <svg
+              class="w-6 h-6 text-gray-800 dark:text-white"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 12H5m14 0-4 4m4-4-4-4"
+              />
+            </svg>
+          </button>
+        </div>
+      </section>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      //variables
+      const ctx = document.getElementById("doughnut-1");
+      const ctx1 = document.getElementById("pie-2");
+      const ctx2 = document.getElementById("pie-3");
+      const ctx3 = document.getElementById("pie-4");
+      const ctx4 = document.getElementById("pie-5");
+      const ctx5 = document.getElementById("pie-6");
+      const ctx6 = document.getElementById("pie-7");
+      const ctx7 = document.getElementById("pie-8");
+      const ctx8 = document.getElementById("pie-9");
+      const ctx9 = document.getElementById("pie-10");
+      const ctx10 = document.getElementById("pie-11");
+      const ctx11 = document.getElementById("pie-12");
+      const ctx12 = document.getElementById("pie-13");
+      const ctx13 = document.getElementById("pie-14");
+      const ctx14 = document.getElementById("pie-15");
+      let items = document.querySelectorAll(".slider .list .item");
+      let prevBtn = document.getElementById("prev");
+      let nextBtn = document.getElementById("next");
+      let lastPosition = items.length - 1;
+      let firstPosition = 0;
+      let active = 0;
+
+      // slider
+      nextBtn.onclick = () => {
+        active = active + 1;
+        setSlider();
+      };
+      prevBtn.onclick = () => {
+        active = active - 1;
+        setSlider();
+      };
+      const setSlider = () => {
+        let oldActive = document.querySelector(".slider .list .item.active");
+        if (oldActive) oldActive.classList.remove("active");
+        items[active].classList.add("active");
+        //
+        nextBtn.classList.remove("d-none");
+        prevBtn.classList.remove("d-none");
+        if (active == lastPosition) nextBtn.classList.add("d-none");
+        if (active == firstPosition) prevBtn.classList.add("d-none");
+      };
+      setSlider();
+
+      // set diameter
+      const setDiameter = () => {
+        let slider = document.querySelector(".slider");
+        let widthSlider = slider.offsetWidth;
+        let heightSlider = slider.offsetHeight;
+        let diameter = Math.sqrt(
+          Math.pow(widthSlider, 2) + Math.pow(heightSlider, 2)
+        );
+        document.documentElement.style.setProperty(
+          "--diameter",
+          diameter + "px"
+        );
+      };
+      setDiameter();
+      window.addEventListener("resize", () => {
+        setDiameter();
+      });
+      // Pie-1 chart
+      new Chart(ctx, {
+        type: "pie",
+        data: {
+          labels: ["Feminino", "Masculino", "Prefiro não responder"],
+          datasets: [
+            {
+              label: "Votos",
+              data: [145, 77, 6],
+              backgroundColor: [
+                "rgba(65, 105, 225, 1)",
+                "rgba(148, 0, 211, 1)",
+                "rgba(0, 191, 255, 1)",
+              ],
+              color: "rgb(255, 255, 255)",
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          plugins: {
+            // Changing the lagend colour
+            legend: {
+              labels: {
+                color: "rgb(255, 255, 255)",
+              },
+            },
+          },
+        },
+      });
+
+      // Pie-2 chart
+      new Chart(ctx1, {
+        type: "pie",
+        data: {
+          labels: [
+            "De 15 a 20 anos (56,6%)",
+            "De 21 a 25 anos (18%)",
+            "Outros",
+          ],
+          datasets: [
+            {
+              label: "Votos",
+              data: [129, 41, 38],
+              backgroundColor: [
+                "rgba(65, 105, 225, 1)",
+                "rgba(148, 0, 211, 1)",
+                "rgba(0, 191, 255, 1)",
+              ],
+              color: "rgb(255, 255, 255)",
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          plugins: {
+            // Changing the lagend colour
+            legend: {
+              labels: {
+                color: "rgb(255, 255, 255)",
+              },
+            },
+          },
+        },
+      });
+
+      // Pie-3 chart
+      new Chart(ctx2, {
+        type: "pie",
+        data: {
+          labels: [
+            "Ensino médio Completo (36,4%)",
+            "Ensino médio Incompleto (30,7%)",
+            "Outros",
+          ],
+          datasets: [
+            {
+              label: "Votos",
+              data: [82, 69, 77],
+              backgroundColor: [
+                "rgba(65, 105, 225, 1)",
+                "rgba(148, 0, 211, 1)",
+                "rgba(0, 191, 255, 1)",
+              ],
+              color: "rgb(255, 255, 255)",
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          plugins: {
+            // Changing the lagend colour
+            legend: {
+              labels: {
+                color: "rgb(255, 255, 255)",
+              },
+            },
+          },
+        },
+      });
+
+      // Pie-4 chart
+      new Chart(ctx3, {
+        type: "pie",
+        data: {
+          labels: [
+            "De R$ 2.001,00 a R$ 3.000,00” (22,8%)",
+            "“De R$ 3.001,00 a R$ 4.000,00” (19,3%) ",
+            "“De R$ 1.001,00 a R$ 2.000,00” (18,4%)",
+            "outros",
+          ],
+          datasets: [
+            {
+              label: "Votos",
+              data: [51, 44, 41, 92],
+              backgroundColor: [
+                "rgba(65, 105, 225, 1)",
+                "rgba(148, 0, 211, 1)",
+                "rgba(0, 191, 255, 1)",
+                "rgba(30, 144, 255, 1)",
+              ],
+              color: "rgb(255, 255, 255)",
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          plugins: {
+            // Changing the lagend colour
+            legend: {
+              labels: {
+                color: "rgb(255, 255, 255)",
+              },
+            },
+          },
+        },
+      });
+
+      // Pie-5 chart
+      new Chart(ctx4, {
+        type: "pie",
+        data: {
+          labels: ["lojas físicas (52,2%)", "Lojas Online (47,8%) "],
+          datasets: [
+            {
+              label: "Votos",
+              data: [119, 109],
+              backgroundColor: [
+                "rgba(65, 105, 225, 1)",
+                "rgba(148, 0, 211, 1)",
+              ],
+              color: "rgb(255, 255, 255)",
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          plugins: {
+            // Changing the lagend colour
+            legend: {
+              labels: {
+                color: "rgb(255, 255, 255)",
+              },
+            },
+          },
+        },
+      });
+
+      // Pie-6 chart
+      new Chart(ctx5, {
+        type: "bar",
+        data: {
+          labels: [
+            "Disposição (51,5%)",
+            "Mais Treinamento (41,5%)",
+            "Conhecimento (41%)",
+            "Educação (40,6%))",
+          ],
+          color: "rgb(255, 255, 255)",
+          datasets: [
+            {
+              label: "",
+              data: [118, 95, 94, 93],
+              backgroundColor: "rgba(70, 130, 180, 0.2)", // Primary Blue with transparency
+              borderColor: "rgba(70, 130, 180, 1)", // Primary Blue
+              borderWidth: 2,
+              pointBackgroundColor: "rgba(70, 130, 180, 1)", // Primary Blue
+              pointBorderColor: "#fff",
+              pointHoverBackgroundColor: "rgba(70, 130, 180, 0.5)", // Primary Blue with 50% opacity
+              pointHoverBorderColor: "#fff",
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          scales: {
+            x: {
+              ticks: {
+                color: "#fff", // White ticks for visibility
+              },
+            },
+            y: {
+              ticks: {
+                color: "#fff", // White ticks for visibility
+              },
+            },
+          },
+          plugins: {
+            // Changing the lagend colour
+            legend: {
+              display: false,
+              labels: {
+                color: "rgb(255, 255, 255)",
+              },
+            },
+          },
+        },
+      });
+
+      new Chart(ctx6, {
+        type: "bar",
+        data: {
+          labels: [
+            "Má vontade (78,9%)",
+            "mal humor  (67,1%)",
+            "ficar “muito em cima”  (57,9%)",
+            "Grosseria (58,3%)",
+          ],
+          color: "rgb(255, 255, 255)",
+          datasets: [
+            {
+              label: "",
+              data: [180, 153, 132, 133],
+              backgroundColor: "rgba(70, 130, 180, 0.2)", // Primary Blue with transparency
+              borderColor: "rgba(70, 130, 180, 1)", // Primary Blue
+              borderWidth: 2,
+              pointBackgroundColor: "rgba(70, 130, 180, 1)", // Primary Blue
+              pointBorderColor: "#fff",
+              pointHoverBackgroundColor: "rgba(70, 130, 180, 0.5)", // Primary Blue with 50% opacity
+              pointHoverBorderColor: "#fff",
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          scales: {
+            x: {
+              ticks: {
+                color: "#fff", // White ticks for visibility
+              },
+            },
+            y: {
+              ticks: {
+                color: "#fff", // White ticks for visibility
+              },
+            },
+          },
+          plugins: {
+            title: {
+              display: true,
+              text: "Caracteristícas Negativas",
+              color: "#FFF",
+              font: {
+                size: "20em",
+                wight: "bold",
+              },
+              padding: "25",
+            },
+            // Changing the lagend colour
+            legend: {
+              display: false,
+              labels: {
+                color: "rgb(255, 255, 255)",
+              },
+            },
+          },
+        },
+      });
+
+      new Chart(ctx7, {
+        type: "bar",
+        data: {
+          labels: [
+            "Simpatia (77,2%)",
+            "Ser Educado (73,7%)",
+            "Ser Atencioso (59,6%)",
+            "Paciência (51,8%)",
+          ],
+          color: "rgb(255, 255, 255)",
+          datasets: [
+            {
+              label: "",
+              data: [176, 168, 136, 118],
+              backgroundColor: "rgba(70, 130, 180, 0.2)", // Primary Blue with transparency
+              borderColor: "rgba(70, 130, 180, 1)", // Primary Blue
+              borderWidth: 2,
+              pointBackgroundColor: "rgba(70, 130, 180, 1)", // Primary Blue
+              pointBorderColor: "#fff",
+              pointHoverBackgroundColor: "rgba(70, 130, 180, 0.5)", // Primary Blue with 50% opacity
+              pointHoverBorderColor: "#fff",
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          scales: {
+            x: {
+              ticks: {
+                color: "#fff", // White ticks for visibility
+              },
+            },
+            y: {
+              ticks: {
+                color: "#fff", // White ticks for visibility
+              },
+            },
+          },
+          plugins: {
+            title: {
+              display: true,
+              text: "Caracteristícas Positivas",
+              color: "#FFF",
+              font: {
+                size: "20em",
+                wight: "bold",
+              },
+              padding: "20",
+            },
+            // Changing the lagend colour
+            legend: {
+              display: false,
+              labels: {
+                color: "rgb(255, 255, 255)",
+              },
+            },
+          },
+        },
+      });
+
+      new Chart(ctx8, {
+        type: "pie",
+        data: {
+          labels: ["Sim (76,8%)", "Lojas Online (23,2%) "],
+          datasets: [
+            {
+              label: "Votos",
+              data: [177, 54],
+              backgroundColor: [
+                "rgba(65, 105, 225, 1)",
+                "rgba(148, 0, 211, 1)",
+              ],
+              color: "rgb(255, 255, 255)",
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          plugins: {
+            // Changing the lagend colour
+            legend: {
+              labels: {
+                color: "rgb(255, 255, 255)",
+              },
+            },
+          },
+        },
+      });
+
+      new Chart(ctx9, {
+        type: "pie",
+        data: {
+          labels: ["Outros", "Lojas São Paulo", "Lojas Silva", "K modas"],
+          datasets: [
+            {
+              label: "Votos",
+              data: [49, 7, 6, 5],
+              backgroundColor: [
+                "rgba(65, 105, 225, 1)",
+                "rgba(148, 0, 211, 1)",
+                "rgba(0, 191, 255, 1)",
+                "rgba(30, 144, 255, 1)",
+              ],
+              color: "rgb(255, 255, 255)",
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          plugins: {
+            title: {
+              display: true,
+              text: "Lojas não Indicadas",
+              color: "#FFF",
+              font: {
+                size: "20em",
+                wight: "bold",
+              },
+              padding: "20",
+            },
+            // Changing the lagend colour
+            legend: {
+              labels: {
+                color: "rgb(255, 255, 255)",
+              },
+            },
+          },
+        },
+      });
+
+      new Chart(ctx10, {
+        type: "pie",
+        data: {
+          labels: ["Outros", "Lojas São Paulo", "Ivana Calçados", "Luggi"],
+          datasets: [
+            {
+              label: "Votos",
+              data: [90, 16, 15, 14],
+              backgroundColor: [
+                "rgba(65, 105, 225, 1)",
+                "rgba(148, 0, 211, 1)",
+                "rgba(0, 191, 255, 1)",
+                "rgba(30, 144, 255, 1)",
+              ],
+              color: "rgb(255, 255, 255)",
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          plugins: {
+            title: {
+              display: true,
+              text: "Lojas Indicadas",
+              color: "#FFF",
+              font: {
+                size: "20em",
+                wight: "bold",
+              },
+              padding: "20",
+            },
+            // Changing the lagend colour
+            legend: {
+              labels: {
+                color: "rgb(255, 255, 255)",
+              },
+            },
+          },
+        },
+      });
+
+      new Chart(ctx11, {
+        type: "pie",
+        data: {
+          labels: ["Feminino (64%)", "Masculino (36%)"],
+          datasets: [
+            {
+              label: "Votos",
+              data: [134, 80],
+              backgroundColor: [
+                "rgba(65, 105, 225, 1)",
+                "rgba(148, 0, 211, 1)",
+              ],
+              color: "rgb(255, 255, 255)",
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          plugins: {
+            title: {
+              display: true,
+              text: "Gênero x Loja Física",
+              color: "#FFF",
+              font: {
+                size: "20em",
+                wight: "bold",
+              },
+              padding: "20",
+            },
+            // Changing the lagend colour
+            legend: {
+              labels: {
+                color: "rgb(255, 255, 255)",
+              },
+            },
+          },
+        },
+      });
+
+      new Chart(ctx12, {
+        type: "pie",
+        data: {
+          labels: ["Feminino (68%)", "Masculino (32%)"],
+          datasets: [
+            {
+              label: "Votos",
+              data: [156, 74],
+              backgroundColor: [
+                "rgba(65, 105, 225, 1)",
+                "rgba(148, 0, 211, 1)",
+              ],
+              color: "rgb(255, 255, 255)",
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          plugins: {
+            title: {
+              display: true,
+              text: "Gênero x Loja Física",
+              color: "#FFF",
+              font: {
+                size: "20em",
+                wight: "bold",
+              },
+              padding: "20",
+            },
+            // Changing the lagend colour
+            legend: {
+              labels: {
+                color: "rgb(255, 255, 255)",
+              },
+            },
+          },
+        },
+      });
+
+      new Chart(ctx13, {
+        type: "pie",
+        data: {
+          labels: [
+            "entre 15-20 (65%)",
+            "Entre 21-25 (11%)",
+            "Entre 26-30 (6%)",
+          ],
+          datasets: [
+            {
+              label: "Votos",
+              data: [148, 25, 17],
+              backgroundColor: [
+                "rgba(65, 105, 225, 1)",
+                "rgba(148, 0, 211, 1)",
+                "rgba(0, 191, 255, 1)",
+              ],
+              color: "rgb(255, 255, 255)",
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          plugins: {
+            title: {
+              display: true,
+              text: "Gênero x Loja Física",
+              color: "#FFF",
+              font: {
+                size: "20em",
+                wight: "bold",
+              },
+              padding: "20",
+            },
+            // Changing the lagend colour
+            legend: {
+              labels: {
+                color: "rgb(255, 255, 255)",
+              },
+            },
+          },
+        },
+      });
+
+      new Chart(ctx14, {
+        type: "pie",
+        data: {
+          labels: [
+            "entre 15-20 (49%)",
+            "Entre 21-25 (24%)",
+            "Entre 26-30 (9%)",
+          ],
+          datasets: [
+            {
+              label: "Votos",
+              data: [111, 54, 20],
+              backgroundColor: [
+                "rgba(65, 105, 225, 1)",
+                "rgba(148, 0, 211, 1)",
+                "rgba(0, 191, 255, 1)",
+              ],
+              color: "rgb(255, 255, 255)",
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          plugins: {
+            title: {
+              display: true,
+              text: "Gênero x Loja Física",
+              color: "#FFF",
+              font: {
+                size: "20em",
+                wight: "bold",
+              },
+              padding: "20",
+            },
+            // Changing the lagend colour
+            legend: {
+              labels: {
+                color: "rgb(255, 255, 255)",
+              },
+            },
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
