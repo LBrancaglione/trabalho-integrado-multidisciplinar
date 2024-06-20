@@ -320,6 +320,18 @@
             </div>
           </div>
           <div class="item">
+            <div class="image" style="--url: url('img/1.jpg')"></div>
+            <div class="content">
+              <h2 style="font-size: 6em">Avaliação Geral</h2>
+              <div class="chart">
+                <canvas id="pie-16" width="400" height="400"></canvas>
+                <p>
+                  - Atendimento "Razoavelmente bom"
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="item">
             <div class="image" style="--url: url('img/2.jpg')"></div>
             <div class="content">
               <h2 style="font-size: 6em">Melhorias no Atendimento</h2>
@@ -396,7 +408,7 @@
           <div class="item">
             <div class="image" style="--url: url('img/1.jpg')"></div>
             <div class="content">
-              <h2 style="font-size: 6em;">Portanto...</h2>
+              <h2 style="font-size: 6em">Portanto...</h2>
               <p>
                 - base sólida de satisfação geral <br />
                 - Investir na melhoria <br />
@@ -465,6 +477,7 @@
       const ctx12 = document.getElementById("pie-13");
       const ctx13 = document.getElementById("pie-14");
       const ctx14 = document.getElementById("pie-15");
+      const ctx15 = document.getElementById("pie-16");
       let items = document.querySelectorAll(".slider .list .item");
       let prevBtn = document.getElementById("prev");
       let nextBtn = document.getElementById("next");
@@ -852,7 +865,7 @@
       new Chart(ctx8, {
         type: "pie",
         data: {
-          labels: ["Sim (76,8%)", "Lojas Online (23,2%) "],
+          labels: ["Sim (76,8%)", "Não (23,2%) "],
           datasets: [
             {
               label: "Votos",
@@ -1020,7 +1033,7 @@
           plugins: {
             title: {
               display: true,
-              text: "Gênero x Loja Física",
+              text: "Gênero x Loja Digital",
               color: "#FFF",
               font: {
                 size: "20em",
@@ -1125,6 +1138,38 @@
           },
         },
       });
+
+      new Chart(ctx15, {
+        type: "pie",
+        data: {
+          labels: ["Bom", "Razoável", "Fraco", "Excelente"],
+          datasets: [
+            {
+              label: "Votos",
+              data: [93, 93, 23, 15],
+              backgroundColor: [
+                "rgba(65, 105, 225, 1)",
+                "rgba(148, 0, 211, 1)",
+                "rgba(0, 191, 255, 1)",
+                "rgba(30, 144, 255, 1)",
+              ],
+              color: "rgb(255, 255, 255)",
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          plugins: {
+            // Changing the lagend colour
+            legend: {
+              labels: {
+                color: "rgb(255, 255, 255)",
+              },
+            },
+          },
+        },
+      });
+
     </script>
   </body>
 </html>
